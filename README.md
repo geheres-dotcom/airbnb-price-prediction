@@ -47,9 +47,17 @@ The analysis is a Jupyter notebook. Dependencies:
 pip install pandas numpy scikit-learn matplotlib
 ```
 
-The notebook expects two files, `airbnb_train.csv` and `airbnb_test.csv`. Their paths are
-currently hard-coded to a local machine and should be changed to a relative location (for
-example a `data/` folder next to the notebook) before running elsewhere.
+The notebook expects training and test data. The file paths are currently hard-coded to a
+local machine and should be changed to a relative location (for example a `data/` folder next
+to the notebook) before running elsewhere.
+
+Because the raw CSVs are large, they are stored compressed (`airbnb_train.csv.gz`,
+`airbnb_test.csv.gz`). `pandas` reads them directly, with no manual decompression:
+
+```python
+train = pd.read_csv("data/airbnb_train.csv.gz")
+test  = pd.read_csv("data/airbnb_test.csv.gz")
+```
 
 ## Possible improvements
 
