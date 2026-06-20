@@ -51,12 +51,19 @@ The notebook expects training and test data. The file paths are currently hard-c
 local machine and should be changed to a relative location (for example a `data/` folder next
 to the notebook) before running elsewhere.
 
-Because the raw CSVs are large, they are stored compressed (`airbnb_train.csv.gz`,
-`airbnb_test.csv.gz`). `pandas` reads them directly, with no manual decompression:
+Because the raw CSVs are large, they are stored compressed. The training set fits in a single
+file (`airbnb_train.csv.gz`); the larger test set is split into two parts
+(`airbnb_test_part1.csv.gz`, `airbnb_test_part2.csv.gz`) to stay under hosting size limits.
+`pandas` reads gzip directly, and the test parts are reassembled in one line:
 
 ```python
+import pandas as pd
+
 train = pd.read_csv("data/airbnb_train.csv.gz")
-test  = pd.read_csv("data/airbnb_test.csv.gz")
+test = pd.concat([
+    pd.read_csv("data/airbnb_test_part1.csv.gz"),
+    pd.read_csv("data/airbnb_test_part2.csv.gz"),
+], ignore_index=True)
 ```
 
 ## Possible improvements
